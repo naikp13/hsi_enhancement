@@ -1,5 +1,5 @@
 # A python package for hyperspectral resolution enhancement using the `P2SR` Method
-=======
+
 ![Output](figures/fig1.png)
 
 This repository contains a Python library for enhancing the resolution of Hyperspectral Imaging (HSI) data by fusing them with high-resolution Multispectral Imaging (MSI) data. The implementation uses sparse coding, multi-decomposition, and parallel patchwise computing to produce high-quality HSI enhancement results.
