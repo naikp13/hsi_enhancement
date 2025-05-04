@@ -1,15 +1,14 @@
-# A python package for hyperspectral resolution enhancement using the P2SR Method
+# A python package for hyperspectral resolution enhancement using the `P2SR` Method
 
 This repository contains a Python library for enhancing the resolution of Hyperspectral Imaging (HSI) data by fusing them with high-resolution Multispectral Imaging (MSI) data. The implementation uses sparse coding, multi-decomposition, and parallel patchwise computing to produce high-quality HSI enhancement results.
 
 ## Features
-- Modular code structure with separate modules for data loading, decomposition, sparse coding, patch processing, upsampling, and enhancement
+- Modular structure for data loading, decomposition, sparse coding, patch processing, upsampling, and enhancement
 - Configurable hyperparameters (patch size, stride, guide radius, detail weight) via the `fuse_to_enhance` method
 - Parallel processing for efficient patch-based computations
-- Advanced decomposition techniques (Wavelet, FastICA, NMF)
+- Advanced decomposition techniques for feature extraction (Wavelet, FastICA, NMF)
 - Guided filtering for detail enhancement
 - Demo script with command-line argument support for easy usage
-- Output saving as NumPy arrays
 
 ## Installation
 
@@ -50,8 +49,8 @@ This repository contains a Python library for enhancing the resolution of Hypers
    ```python
    from hsi_enhancement import HSIEnhancer
 
-   msi_path = 'data/Lofdal_sent.tif'
-   hsi_path = 'data/Lofdal_enmap.dat'
+   msi_path = 'data/msi_sentinel.tif'
+   hsi_path = 'data/hsi_enmap.tif'
    enhancer = HSIEnhancer(msi_path, hsi_path)
    hsi_enhanced = enhancer.fuse_to_enhance(
        patch_size=16,
@@ -76,11 +75,12 @@ hsi_enhancement/
 │   ├── upsampler.py        # HSI upsampling with MSI details
 │   ├── enhancer.py         # Main HSI enhancement logic
 │   ├── demo.py             # Demo script with command-line arguments
-├── data/                   # Directory for input data (not included)
-├── output/                 # Directory for output files (created automatically)
+├── data/                   # Directory for input data (not included) 
+├── output/                 # Directory for output files
+├── test/                   # Directory for unit test functions
 ├── requirements.txt        # Dependencies
 ├── README.md               # Project documentation
-├── LICENSE                 # License file
+├── LICENSE.txt             # License file
 └── .gitignore              # Git ignore file
 ```
 
@@ -100,8 +100,17 @@ See `requirements.txt` for a full list of dependencies. Key libraries include:
 ## License
 This project is licensed under the MIT License. See the `LICENSE` file for details.
 
-## Contributing
-Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
+## Cite this work
+
+Please cite this article in case this method was helpful and used for your work
+
+```Citation
+Naik, P., Chakraborty, R., Thiele, S., & Gloaguen, R. (2025). Scalable Hyperspectral Enhancement via Patch-Wise Sparse Residual Learning: Insights from Super-Resolved EnMAP Data. MDPI AG. https://doi.org/10.20944/preprints202504.1241.v1
+```
 
 ## Contact
-For questions or support, please open an issue on GitHub.
+
+For issues or questions, open an issue on GitHub or contact [parthnaik1993@gmail.com](mailto:parthnaik1993@gmail.com).
+
+## Contributing
+Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
