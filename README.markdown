@@ -1,6 +1,6 @@
-# HSI Resolution Enhancement by MSI Fusion
+# A python package for hyperspectral resolution enhancement using the P2SR Method
 
-This repository contains a Python library for enhancing the resolution of Hyperspectral Images (HSI) by fusing them with high-resolution Multispectral Images (MSI). The implementation uses sparse coding, wavelet transforms, and guided filtering to produce high-quality results.
+This repository contains a Python library for enhancing the resolution of Hyperspectral Imaging (HSI) data by fusing them with high-resolution Multispectral Imaging (MSI) data. The implementation uses sparse coding, multi-decomposition, and parallel patchwise computing to produce high-quality HSI enhancement results.
 
 ## Features
 - Modular code structure with separate modules for data loading, decomposition, sparse coding, patch processing, upsampling, and enhancement
