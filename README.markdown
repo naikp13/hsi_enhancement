@@ -1,6 +1,6 @@
 # A python package for hyperspectral resolution enhancement using the `P2SR` Method
 
-![Output](figures/fig1.png)
+![Output](output/fig1.png)
 
 This repository contains a Python library for enhancing the resolution of Hyperspectral Imaging (HSI) data by fusing them with high-resolution Multispectral Imaging (MSI) data. The implementation uses sparse coding, multi-decomposition, and parallel patchwise computing to produce high-quality HSI enhancement results.
 
@@ -42,8 +42,8 @@ This repository contains a Python library for enhancing the resolution of Hypers
 
 3. Customize hyperparameters via command-line arguments:
    ```bash
-   python src/demo.py --msi_path data/Lofdal_sent.tif --hsi_path data/Lofdal_enmap.dat \
-       --patch_size 16 --stride 2 --guide_radius 2 --detail_weight 2.5 \
+   python src/demo.py --msi_path data/benchmark_sentinel.tif --hsi_path data/benchmark_enmap.tif \
+       --patch_size 12 --stride 1 --guide_radius 10 --detail_weight 1 \
        --output_path output/hsi_enhanced_custom.npy
    ```
 
@@ -78,7 +78,7 @@ hsi_enhancement/
 │   ├── enhancer.py         # Main HSI enhancement logic
 │   ├── demo.py             # Demo script with command-line arguments
 ├── data/                   # Directory for input data (not included) 
-├── output/                 # Directory for output files
+├── output/                 # Directory for figures from enhanced outputs
 ├── test/                   # Directory for unit test functions
 ├── requirements.txt        # Dependencies
 ├── README.md               # Project documentation
@@ -88,23 +88,23 @@ hsi_enhancement/
 
 ## Requirements
 See `requirements.txt` for a full list of dependencies. Key libraries include:
-- NumPy
-- SciPy
-- Rasterio
+- numpy
+- scipy
+- rasterio
 - scikit-learn
 - scikit-image
-- OpenCV
+- opencv-contrib-python
 - PyWavelets
-- Numba
-- Joblib
-- TQDM
+- numba
+- joblib
+- tqdm
 
 ## License
 This project is licensed under the MIT License. See the `LICENSE` file for details.
 
 ## Cite this work
 
-Please cite this article in case this method was helpful and used for your work
+Please cite this article in case this method was helpful for your research or used for your work,
 
 ```Citation
 Naik, P., Chakraborty, R., Thiele, S., & Gloaguen, R. (2025). Scalable Hyperspectral Enhancement via Patch-Wise Sparse Residual Learning: Insights from Super-Resolved EnMAP Data. MDPI AG. https://doi.org/10.20944/preprints202504.1241.v1
