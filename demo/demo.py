@@ -24,7 +24,7 @@ def parse_arguments():
     return parser.parse_args()
 
 def main():
-    """Demonstrate usage of the HSIEnhancer class with configurable hyperparameters."""
+    """ HSIEnhancer class with configurable hyperparameters."""
     # Configure logging
     logging.basicConfig(level=logging.INFO, filename='demo.log', filemode='w')
 
