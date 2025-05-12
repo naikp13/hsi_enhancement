@@ -1,0 +1,158 @@
+SETUP:
+  Initialize logging to file 'processing.log' with INFO level
+  Import required libraries (numpy, rasterio, scipy, tqdm, joblib, numba, pywt, sklearn, skimage, cv2)
+
+CLASS HSIDataLoader:
+  METHOD load_image(file_path):
+    Open file_path with rasterio
+    Read image data as float32
+    Move channel axis to last dimension
+    Replace non-positive values with NaN
+    RETURN image
+
+  METHOD preprocess_data(data, window_size=3, nan_threshold=0.5):
+    CHECK data is 3D (height, width, channels), else raise error
+    Create mask of non-NaN values
+    IF non-NaN values exist:
+      Fill NaNs with median filter (size=window_size)
+      Replace remaining NaNs with mean of filled data
+    ELSE:
+      Replace NaNs with 0
+    RETURN preprocessed data
+
+  METHOD load_and_preprocess(msi_path, hsi_path, nan_threshold=0.5):
+    Load MSI and HSI images using load_image
+    Filter HSI bands where NaN proportion <= nan_threshold
+    Log eliminated bands if any
+    Preprocess MSI and HSI using preprocess_data
+    RETURN preprocessed MSI, HSI
+
+CLASS Decomposition:
+  METHOD wavelet_3d_transform(data, n_components):
+    Apply 3D wavelet transform (Daubechies 'db1', level=3)
+    Extract approximation coefficients
+    Reshape to 2D matrix, select first n_components
+    Pad with zeros if needed
+    Normalize columns
+    RETURN component matrix
+
+  METHOD fastica_decomposition(data, n_components):
+    Initialize FastICA (n_components, random_state=0, max_iter=200)
+    Reshape data to 2D
+    Apply FastICA
+    Pad with zeros if needed
+    Normalize columns
+    RETURN component matrix
+
+  METHOD nmf_decomposition(data, n_components):
+    Initialize NMF (n_components, random init, random_state=0, max_iter=200)
+    Reshape data to 2D, take absolute values
+    Apply NMF
+    Pad with zeros if needed
+    Normalize columns
+    RETURN component matrix
+
+CLASS SparseCoding:
+  METHOD fista(X, D, lambda_reg, max_iter=75, tol=1e-6):
+    Initialize variables (alpha, y, t)
+    Compute Lipschitz constant L from D
+    IF L == 0, RETURN zero matrix
+    FOR max_iter iterations:
+      Compute gradient
+      Update alpha using soft-thresholding
+      Update y and t for acceleration
+      IF convergence (difference < tol after 5 iterations), break
+    RETURN sparse coefficients alpha
+
+  METHOD train_dictionary(msi_lr_flat, hsi_comp_flat, n_atoms):
+    Combine MSI and HSI data
+    Initialize DictionaryLearning (n_components=n_atoms, alpha=1, max_iter=20)
+    Fit dictionary on combined data
+    RETURN learned dictionary (transposed components)
+
+  METHOD sparse_code_residual(msi_lr_patch, msi_hr_patch, hsi_components, n_atoms, f, lambda_reg):
+    Flatten input patches
+    Train dictionary using train_dictionary
+    Normalize dictionary columns
+    Compute sparse coefficients for high-res MSI using fista
+    Predict high-res patch
+    Upsample mean HSI components (zoom by factor f)
+    Compute residual (predicted - upsampled mean)
+    RETURN residual
+
+CLASS PatchProcessor:
+  INITIALIZE(hsi, msi, patch_size=12, stride=1, n_components=5, n_atoms=5, lambda_reg=0.0005):
+    Store hsi, msi, parameters
+    Compute scale factor f (msi.shape[0] / hsi.shape[0])
+    Downsample MSI to low-res (zoom by 1/f)
+    Initialize Decomposition and SparseCoding objects
+
+  METHOD process_patch(x, y):
+    TRY:
+      Extract HSI, low-res MSI, high-res MSI patches
+      Create mask of finite values
+      IF enough valid pixels (>5):
+        Replace NaNs with mean of valid pixels
+        Compute wavelet, FastICA, NMF components
+        Combine components
+        Reshape patches and components to 2D
+        Compute residual using sparse_code_residual
+        RETURN (x*f, y*f, residual)
+      ELSE:
+        RETURN None
+    CATCH exception:
+      Log error
+      RETURN None
+
+  METHOD run_parallel:
+    Generate patch coordinates (x, y) with stride
+    Initialize output high-res HSI and count arrays
+    Choose parallel backend based on HSI size
+    Run process_patch in parallel for all coordinates with progress bar
+    FOR each result:
+      IF result is not None:
+        Extract x_start, y_start, residual
+        Clip coordinates to valid bounds
+        Add residual to output HSI
+        Increment count
+    Normalize output HSI by counts where counts > 0
+    RETURN high-res HSI
+
+CLASS HSIUpsampler:
+  METHOD enhanced_hsi_upsampling(hsi, msi, msi_guide):
+    CHECK input dimensions
+    Compute HSI band means and stds
+    Resize HSI to MSI resolution (order=5, edge mode)
+    Convert MSI guide to grayscale and normalize
+    Apply Gaussian filter to get low-frequency MSI
+    Compute high-frequency MSI (guide - low)
+    FOR each HSI band:
+      Add high-frequency MSI (weighted)
+      Adjust mean and std to match original
+    RETURN upsampled HSI
+
+CLASS HSIEnhancer:
+  INITIALIZE(msi_path, hsi_path, patch_size=12, stride=1, n_components=5, n_atoms=5, lambda_reg=0.0005):
+    Initialize HSIDataLoader
+    Load and preprocess MSI, HSI
+    Initialize PatchProcessor with parameters
+    Initialize HSIUpsampler
+
+  METHOD fuse_to_enhance:
+    Run patch processing in parallel to get high-res HSI
+    Select MSI guide bands (1, 7, 11)
+    Upsample HSI with MSI detail injection
+    FOR each band:
+      Apply guided filter (msi_guide, upsampled+high-res, radius=1, eps=0.0001)
+      Update band
+    RETURN enhanced HSI
+
+FUNCTION main:
+  Set example MSI and HSI file paths
+  Initialize HSIEnhancer
+  Run fuse_to_enhance
+  Log completion
+  RETURN enhanced HSI
+
+IF script is main:
+  Run main and store result
