@@ -1,4 +1,4 @@
-# A python package for hyperspectral resolution enhancement using the `P2SR` Method
+# A python based package for hyperspectral resolution enhancement using the `P2SR` Method
 
 ![Output](figures/fig1.png)
 
