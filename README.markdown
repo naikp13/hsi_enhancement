@@ -108,7 +108,7 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 Please cite this article in case this method was helpful for your research or used for your work,
 
 ```Citation
-Naik, P., Chakraborty, R., Thiele, S., & Gloaguen, R. (2025). Scalable Hyperspectral Enhancement via Patch-Wise Sparse Residual Learning: Insights from Super-Resolved EnMAP Data. MDPI AG. https://doi.org/10.20944/preprints202504.1241.v1
+Naik, P., Chakraborty, R., Thiele, S., & Gloaguen, R. (2025). Scalable Hyperspectral Enhancement via Patch-Wise Sparse Residual Learning: Insights from Super-Resolved EnMAP Data. Remote Sensing, 17(11), 1878. https://doi.org/10.3390/rs17111878
 ```
 
 ## Contact
