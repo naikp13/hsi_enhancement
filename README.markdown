@@ -2,14 +2,14 @@
 
 ![Output](figures/fig1.png)
 
-This repository contains a Python library for enhancing the resolution of Hyperspectral Imaging (HSI) data by fusing them with high-resolution Multispectral Imaging (MSI) data. The implementation uses sparse coding, multi-decomposition, and parallel patchwise computing to produce high-quality HSI enhancement results.
+This repository contains a Python based package for enhancing the spatial resolution of Hyperspectral Imaging (HSI) data by fusing them with high-resolution Multispectral Imaging (MSI) data. The implementation uses sparse coding, multi-decomposition, and parallel patchwise computing to produce high-quality HSI enhancement results.
 
 ## Features
 - Modular structure for data loading, decomposition, sparse coding, patch processing, upsampling, and enhancement
 - Configurable hyperparameters (patch size, stride, guide radius, detail weight) via the `fuse_to_enhance` method
 - Parallel processing for efficient patch-based computations
 - Advanced decomposition techniques for feature extraction (Wavelet, FastICA, NMF)
-- Guided filtering for detail enhancement
+- Guided filtering and Tuning for scence specific enhancement
 - Demo script with command-line argument support for easy usage
 
 ## Installation
