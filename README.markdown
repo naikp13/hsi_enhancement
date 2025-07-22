@@ -16,7 +16,7 @@ This repository contains a Python based package for enhancing the spatial resolu
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/hsi_enhancement.git
+   git clone https://github.com/naikp13/hsi_enhancement.git
    cd hsi_enhancement
    ```
 
