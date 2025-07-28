@@ -16,7 +16,7 @@ class HSIEnhancer:
         self.upsampler = HSIUpsampler()
 
     def fuse_to_enhance(self, patch_size=12, stride=1, guide_radius=1, detail_weight=3.5):
-    """Perform HSI enhancement by fusing with MSI."""
+        """Perform HSI enhancement by fusing with MSI."""
         patch_processor = PatchProcessor(self.hsi, self.msi, self.n_components, self.n_atoms, self.lambda_reg)
         hsi_hr = patch_processor.run_parallel(patch_size, stride)
     
