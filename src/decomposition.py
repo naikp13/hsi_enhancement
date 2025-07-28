@@ -6,16 +6,18 @@ class Decomposition:
     """Handles signal decomposition methods for HSI data."""
     
     @staticmethod
+
     def wavelet_3d_transform(data, n_components):
         """Apply 3D wavelet transform and extract components."""
+    
         # Perform 3D wavelet decomposition
         coeffs = pywt.wavedecn(data, 'db1', level=3)
     
-        # Create a list with approximation coefficients and None for detail coefficients
+        # Keep only the approximation coefficients (coeffs[0]) and set detail coefficients to None
         coeff_list = [coeffs[0]] + [None] * (len(coeffs) - 1)
     
         # Reconstruct using only approximation coefficients
-        approx = pywt.waverecn(coeff_list, 'db1', output_format='wavedecn')
+        approx = pywt.waverecn(coeff_list, 'db1')
     
         # Reshape and extract components
         W = approx.reshape(-1, data.shape[-1])[:, :n_components]
@@ -25,7 +27,11 @@ class Decomposition:
             W = np.pad(W, ((0, 0), (0, n_components - W.shape[1])), mode='constant')
     
         # Normalize and return
-        return W / np.linalg.norm(W, axis=0, keepdims=True)
+        norm = np.linalg.norm(W, axis=0, keepdims=True)
+        # Avoid division by zero
+        norm = np.where(norm == 0, 1, norm)
+        return W / norm
+        
     # def wavelet_3d_transform(data, n_components):
     #     """Apply 3D wavelet transform and extract components."""
     #     coeffs = pywt.wavedecn(data, 'db1', level=3)
