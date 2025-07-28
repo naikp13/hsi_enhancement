@@ -25,7 +25,7 @@ class HSIEnhancer:
         hsi_upsampled = self.upsampler.enhanced_hsi_upsampling(self.hsi, self.msi, msi_guide, detail_weight)
 
         for band in range(hsi_upsampled.shape[-1]):
-            hsi_hr_band = cv2.ximgproc.guidedFilter(
+            hsi_hr_band = cv2.ximgproc.createGuidedFilter(
                 guide=msi_guide,
                 src=hsi_upsampled[..., band] + hsi_hr[..., band],
                 radius=guide_radius,
