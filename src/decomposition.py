@@ -7,25 +7,25 @@ class Decomposition:
     
     @staticmethod
     def wavelet_3d_transform(data, n_components):
-    """Apply 3D wavelet transform and extract components."""
-    # Perform 3D wavelet decomposition
-    coeffs = pywt.wavedecn(data, 'db1', level=3)
+        """Apply 3D wavelet transform and extract components."""
+        # Perform 3D wavelet decomposition
+        coeffs = pywt.wavedecn(data, 'db1', level=3)
     
-    # Create a list with approximation coefficients and None for detail coefficients
-    coeff_list = [coeffs[0]] + [None] * (len(coeffs) - 1)
+        # Create a list with approximation coefficients and None for detail coefficients
+        coeff_list = [coeffs[0]] + [None] * (len(coeffs) - 1)
     
-    # Reconstruct using only approximation coefficients
-    approx = pywt.waverecn(coeff_list, 'db1', output_format='wavedecn')
+        # Reconstruct using only approximation coefficients
+        approx = pywt.waverecn(coeff_list, 'db1', output_format='wavedecn')
     
-    # Reshape and extract components
-    W = approx.reshape(-1, data.shape[-1])[:, :n_components]
+        # Reshape and extract components
+        W = approx.reshape(-1, data.shape[-1])[:, :n_components]
     
-    # Pad if necessary
-    if W.shape[1] < n_components:
-        W = np.pad(W, ((0, 0), (0, n_components - W.shape[1])), mode='constant')
+        # Pad if necessary
+        if W.shape[1] < n_components:
+            W = np.pad(W, ((0, 0), (0, n_components - W.shape[1])), mode='constant')
     
-    # Normalize and return
-    return W / np.linalg.norm(W, axis=0, keepdims=True)
+        # Normalize and return
+        return W / np.linalg.norm(W, axis=0, keepdims=True)
     # def wavelet_3d_transform(data, n_components):
     #     """Apply 3D wavelet transform and extract components."""
     #     coeffs = pywt.wavedecn(data, 'db1', level=3)
