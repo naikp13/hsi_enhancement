@@ -1,5 +1,5 @@
 import numpy as np
-import pywt
+#import pywt
 from sklearn.decomposition import FastICA, NMF
 
 class Decomposition:
@@ -8,19 +8,22 @@ class Decomposition:
     @staticmethod
 
     def wavelet_3d_transform(data, n_components):
-        """Apply 3D wavelet transform and extract components."""
+        """Extract components from 3D data using PCA and normalize."""
+        import numpy as np
     
-        # Perform 3D wavelet decomposition
-        coeffs = pywt.wavedecn(data, 'db1', level=3)
+        # Flatten the 3D data to 2D for PCA
+        flattened_data = data.reshape(-1, data.shape[-1])
     
-        # Keep only the approximation coefficients (coeffs[0]) and set detail coefficients to None
-        coeff_list = [coeffs[0]] + [None] * (len(coeffs) - 1)
+        # Center the data
+        mean = np.mean(flattened_data, axis=0)
+        centered_data = flattened_data - mean
     
-        # Reconstruct using only approximation coefficients
-        approx = pywt.waverecn(coeff_list, 'db1')
+        # Compute PCA using SVD
+        U, S, Vt = np.linalg.svd(centered_data, full_matrices=False)
     
-        # Reshape and extract components
-        W = approx.reshape(-1, data.shape[-1])[:, :n_components]
+        # Extract the top n_components
+        W = Vt[:n_components].T  # Principal components
+        W = flattened_data @ W   # Project data onto components
     
         # Pad if necessary
         if W.shape[1] < n_components:
@@ -28,8 +31,7 @@ class Decomposition:
     
         # Normalize and return
         norm = np.linalg.norm(W, axis=0, keepdims=True)
-        # Avoid division by zero
-        norm = np.where(norm == 0, 1, norm)
+        norm = np.where(norm == 0, 1, norm)  # Avoid division by zero
         return W / norm
         
     # def wavelet_3d_transform(data, n_components):
