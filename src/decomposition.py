@@ -1,5 +1,5 @@
 import numpy as np
-#import pywt
+import pywt
 from sklearn.decomposition import FastICA, NMF
 
 class Decomposition:
