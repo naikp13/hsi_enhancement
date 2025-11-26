@@ -2,7 +2,7 @@ import argparse
 import logging
 import numpy as np
 import os
-from hsi_enhancement import HSIEnhancer
+from hyEnhance import HSIEnhancer
 
 def parse_arguments():
     """Parse command-line arguments for hyperparameters."""
