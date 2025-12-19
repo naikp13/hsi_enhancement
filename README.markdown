@@ -17,8 +17,8 @@ This repository contains a Python based package for enhancing the spatial resolu
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/naikp13/hsi_enhancement.git
-   cd hsi_enhancement
+   git clone https://github.com/naikp13/hyEnhance.git
+   cd hyEnhance
    ```
 
 2. Create a virtual environment and activate it:
@@ -50,7 +50,7 @@ This repository contains a Python based package for enhancing the spatial resolu
 
 4. Alternatively, use the library in your own scripts:
    ```python
-   from hsi_enhancement import HSIEnhancer
+   from hyEnhance import HSIEnhancer
 
    msi_path = 'data/msi_sentinel.tif'
    hsi_path = 'data/hsi_enmap.tif'
@@ -68,7 +68,7 @@ This repository contains a Python based package for enhancing the spatial resolu
 
 ## Project Structure
 ```
-hsi_enhancement/
+hyEnhance/
 ├── src/
 │   ├── __init__.py         # Package initialization
 │   ├── data_loader.py      # Data loading and preprocessing
