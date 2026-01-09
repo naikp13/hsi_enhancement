@@ -34,7 +34,7 @@ This repository contains a Python based package for enhancing the spatial resolu
 
 ## Usage
 
-1. Place your MSI and HSI data files in the `data/` directory (e.g., `Lofdal_sent.tif` and `Lofdal_enmap.dat`).
+1. Place your MSI and HSI data files in the `data/` directory.
 
 2. Run the demo script with default hyperparameters:
    ```bash
